@@ -1,6 +1,6 @@
 using ThesisApp.Enums;
 
-namespace ThesisApp.Models;
+namespace ThesisApp.Entities;
 
 public class User
 {
