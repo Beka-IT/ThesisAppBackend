@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JFEUpq6vQaF/z4ultpd9GIaMKqTBmkAS3Dx69AWYhXDyZNVTMEzOuLVAVM+a8oDR9u3E8Xt/yDRNL2dhmBNShg==",
+  "dgSpecHash": "b74mt3MIL2Ow+2v2U/jNENjeEWNgQnLCzhPNfJsi71e6sNkKdxxZlcyb0PqJ2Xh2bx+sasRIuhErGq8eIph7tg==",
   "success": true,
-  "projectFilePath": "/home/beka/RiderProjects/ThesisApp/ThesisApp/ThesisApp.csproj",
+  "projectFilePath": "/home/beka/RiderProjects/ThesisAppBackend/ThesisApp/ThesisApp.csproj",
   "expectedPackageFiles": [
     "/home/beka/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/home/beka/.nuget/packages/microsoft.data.sqlite.core/6.0.0/microsoft.data.sqlite.core.6.0.0.nupkg.sha512",

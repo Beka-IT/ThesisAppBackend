@@ -1685,11 +1685,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/beka/RiderProjects/ThesisApp/ThesisApp/ThesisApp.csproj",
+      "projectUniqueName": "/home/beka/RiderProjects/ThesisAppBackend/ThesisApp/ThesisApp.csproj",
       "projectName": "ThesisApp",
-      "projectPath": "/home/beka/RiderProjects/ThesisApp/ThesisApp/ThesisApp.csproj",
+      "projectPath": "/home/beka/RiderProjects/ThesisAppBackend/ThesisApp/ThesisApp.csproj",
       "packagesPath": "/home/beka/.nuget/packages/",
-      "outputPath": "/home/beka/RiderProjects/ThesisApp/ThesisApp/obj/",
+      "outputPath": "/home/beka/RiderProjects/ThesisAppBackend/ThesisApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/beka/.nuget/NuGet/NuGet.Config"
