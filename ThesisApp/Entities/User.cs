@@ -13,5 +13,9 @@ public class User
     public int DepartmentId { get; set; }
     public string PhoneNumber { get; set; }
     public UserType Role { get; set; }
+    public long? SelectedThesisId { get; set; } 
+    public Thesis SelectedThesis { get; set; } = null!; 
+    public long? RecommendedThesisId { get; set; } 
+    public Thesis RecommendedThesis { get; set; } = null!; 
 }
 
