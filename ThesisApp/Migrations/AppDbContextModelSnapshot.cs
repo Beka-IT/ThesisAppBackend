@@ -88,10 +88,14 @@ namespace ThesisApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("FacultyId")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("FacultyId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Firstname")
@@ -99,6 +103,10 @@ namespace ThesisApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -116,14 +124,6 @@ namespace ThesisApp.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long?>("SelectedThesisId")
-                        .IsRequired()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("StudentNumber")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
@@ -131,8 +131,6 @@ namespace ThesisApp.Migrations
                     b.HasIndex("FacultyId");
 
                     b.HasIndex("RecommendedThesisId");
-
-                    b.HasIndex("SelectedThesisId");
 
                     b.ToTable("Users");
                 });
@@ -152,29 +150,17 @@ namespace ThesisApp.Migrations
                 {
                     b.HasOne("ThesisApp.Entities.Department", null)
                         .WithMany("Students")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("ThesisApp.Entities.Faculty", null)
                         .WithMany("Students")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FacultyId");
 
                     b.HasOne("ThesisApp.Entities.Thesis", "RecommendedThesis")
                         .WithMany()
                         .HasForeignKey("RecommendedThesisId");
 
-                    b.HasOne("ThesisApp.Entities.Thesis", "SelectedThesis")
-                        .WithMany("Students")
-                        .HasForeignKey("SelectedThesisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("RecommendedThesis");
-
-                    b.Navigation("SelectedThesis");
                 });
 
             modelBuilder.Entity("ThesisApp.Entities.Department", b =>
@@ -186,11 +172,6 @@ namespace ThesisApp.Migrations
                 {
                     b.Navigation("Departments");
 
-                    b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("ThesisApp.Entities.Thesis", b =>
-                {
                     b.Navigation("Students");
                 });
 #pragma warning restore 612, 618

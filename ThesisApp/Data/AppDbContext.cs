@@ -15,11 +15,7 @@ namespace Municipality.Data
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Thesis>()
-                .HasMany(e => e.Students)
-                .WithOne(e => e.SelectedThesis)
-                .HasForeignKey(e => e.SelectedThesisId)
-                .IsRequired();
+            
         }
 
     }

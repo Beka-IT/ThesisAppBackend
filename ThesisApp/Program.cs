@@ -50,6 +50,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlite(connectionString);
 });
+
+builder.Services.AddAutoMapper(typeof(Program));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -109,4 +111,4 @@ app.UseSession();
 
 app.MapControllers();
 
-app.Run("http://0.0.0.0:7098");
+app.Run("https://0.0.0.0:7098");
