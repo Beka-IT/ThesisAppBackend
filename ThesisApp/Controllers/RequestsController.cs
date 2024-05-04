@@ -98,6 +98,15 @@ public class RequestsController : BaseController
         newRequestToThesis.CreatedAt = DateTime.Now;
 
         await _db.AddAsync(newRequestToThesis);
+        var notification = new Notification()
+        {
+            CreatedAt = DateTime.Now,
+            IsRead = false,
+            TitleTr = $"{user.Lastname} {user.Lastname} size bir tez konusu teklif etti!",
+            TitleKg = $"{user.Lastname} {user.Lastname} сизге дипломдук-иш боюнча тема сунуштады!",
+            SentToId = newRequestToThesis.CuratorId
+        };
+        await _db.AddAsync(notification);
         await _db.SaveChangesAsync();
 
         return Ok(newRequestToThesis);
@@ -126,6 +135,15 @@ public class RequestsController : BaseController
         };
         await _db.AddAsync(newThesis);
         _db.Remove(request);
+        var notification = new Notification()
+        {
+            CreatedAt = DateTime.Now,
+            IsRead = false,
+            TitleTr = $"{user.Lastname} {user.Lastname} siz teklif ettiğiniz tez konusunu kabul etti!",
+            TitleKg = $"{user.Lastname} {user.Lastname} сиз сунуштаган дипломдук-иш боюнча теманы кабылдады!",
+            SentToId = request.StudentId
+        };
+        await _db.AddAsync(notification);
         await _db.SaveChangesAsync();
         if (request.IsMyTheme)
         {
@@ -133,7 +151,7 @@ public class RequestsController : BaseController
             student.ChosenThesisId = newThesis.Id;
             await _db.SaveChangesAsync();
         }
-
+        
         return Ok(newThesis);
     }
     [HttpPut]
@@ -147,6 +165,15 @@ public class RequestsController : BaseController
         }
 
         _db.Remove(request);
+        var notification = new Notification()
+        {
+            CreatedAt = DateTime.Now,
+            IsRead = false,
+            TitleTr = $"{user.Lastname} {user.Lastname} siz teklif ettiğiniz tez konusunu kabul etmedi!",
+            TitleKg = $"{user.Lastname} {user.Lastname} сиз сунуштаган дипломдук-иш боюнча теманы кабыл алган жок!",
+            SentToId = request.StudentId
+        };
+        await _db.AddAsync(notification);
         await _db.SaveChangesAsync();
 
         return Ok(request);

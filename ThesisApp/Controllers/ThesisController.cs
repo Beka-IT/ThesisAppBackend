@@ -145,6 +145,15 @@ public class ThesisController : BaseController
         }
 
         user.ChosenThesisId = thesis.Id;
+        var notification = new Notification()
+        {
+            CreatedAt = DateTime.Now,
+            IsRead = false,
+            TitleTr = $"{user.Lastname} {user.Lastname} girdiğiniz konuyu seçti!",
+            TitleKg = $"{user.Lastname} {user.Lastname} сиз киргизген теманы тандады!",
+            SentToId = thesis.CuratorId
+        };
+        await _db.AddAsync(notification);
         await _db.SaveChangesAsync();
         var result = _mapper.Map<UserRequest>(user);
         if (user.Role == UserType.Student || user.Role == UserType.Teacher)

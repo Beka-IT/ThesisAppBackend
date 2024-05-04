@@ -111,6 +111,23 @@ public class UsersController : BaseController
         {
             await _db.SaveChangesAsync();
             await _usersService.GenerateAndSendConfirmCode(user);
+            var admin = await _db.Users.FirstOrDefaultAsync(a =>
+                a.DepartmentId == user.DepartmentId && a.Role == UserType.DepartmentAdmin);
+            
+            if (admin is not null)
+            {
+                var notification = new Notification()
+                {
+                    CreatedAt = DateTime.Now,
+                    IsRead = false,
+                    TitleTr = $"{user.Lastname} {user.Lastname} siteye kaydoldu!",
+                    TitleKg = $"{user.Lastname} {user.Lastname} системага катталды!",
+                    SentToId = admin.Id
+                };
+                await _db.AddAsync(notification);
+                await _db.SaveChangesAsync();
+            }
+
         }
         catch (Exception ex)
         {
@@ -196,6 +213,15 @@ public class UsersController : BaseController
         if (teacher.StudentsCountLimit >= (studentCounts + 1))
         {
             user.CuratorId = teacherId;
+            var notification = new Notification()
+            {
+                CreatedAt = DateTime.Now,
+                IsRead = false,
+                TitleTr = $"{user.Lastname} {user.Lastname} sizi küratör olarak seçti!",
+                TitleKg = $"{user.Lastname} {user.Lastname} сизди куратор катары тандады!",
+                SentToId = teacherId
+            };
+            await _db.AddAsync(notification);
             await _db.SaveChangesAsync();
             return Ok();
         }
@@ -249,6 +275,7 @@ public class UsersController : BaseController
 
         var result = _mapper.Map<UserRequest>(user);
         result.Token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+        result.UnreadNotificationsCount = _db.Notifications.Where(n => n.SentToId == user.Id && !n.IsRead).Count();
         if (user.Role == UserType.Student || user.Role == UserType.Teacher)
         {
             var deadline = await _db.Deadlines.OrderByDescending(d => d.Id).FirstOrDefaultAsync(d => d.DepartmentId == user.DepartmentId);

@@ -17,4 +17,5 @@ public class UserRequest
     public string Token { get; set; }
     public DateTime? Deadline { get; set; }
     public long? ChosenThesisId { get; set; }
+    public int UnreadNotificationsCount { get; set; }
 }

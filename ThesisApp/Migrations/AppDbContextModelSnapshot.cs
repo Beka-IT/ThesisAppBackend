@@ -90,6 +90,34 @@ namespace ThesisApp.Migrations
                     b.ToTable("Faculties");
                 });
 
+            modelBuilder.Entity("ThesisApp.Entities.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("SentToId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TitleKg")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TitleTr")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("ThesisApp.Entities.RequestToThesis", b =>
                 {
                     b.Property<long>("Id")
