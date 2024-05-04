@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Municipality.Data;
 using ThesisApp.Entities;
+using ThesisApp.Enums;
 using ThesisApp.Helpers;
 using ThesisApp.Models;
 using ThesisApp.Services;
@@ -80,6 +81,85 @@ public class UsersController : BaseController
         return await _usersService.Confirm(req);
     }
 
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetMyTeachers()
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == Account.Id);
+
+        var teachers = await _db.Users
+            .Where(u => u.Role == UserType.Teacher && u.DepartmentId == user.DepartmentId)
+            .Select(u => new {u.Id, u.Firstname, u.Lastname, u.Email})
+            .ToListAsync();
+        
+        return Ok(teachers);
+    }
+    
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetDepartmentTeachers(int departmentId)
+    {
+        var teachers = await _db.Users
+            .Where(u => u.Role == UserType.Teacher && u.DepartmentId == departmentId)
+            .Select(u => new {u.Id, u.Firstname, u.Lastname, u.Email})
+            .ToListAsync();
+        
+        return Ok(teachers);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> SetDepartmentAdminRole(long teacherId)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == Account.Id);
+        if (user.Role != UserType.SuperAdmin)
+        {
+            throw new AppException("Permission denied!");
+        }
+
+        var teacher = await _db.Users.FindAsync(teacherId);
+        
+        if (teacher is not null)
+        {
+            teacher.Role = UserType.DepartmentAdmin;
+            await _db.SaveChangesAsync();
+        }
+
+        return Ok();
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> SetStudentsCountLimit(int limit)
+    {
+        var teacher = await _db.Users.FirstOrDefaultAsync(t => t.Id == Account.Id);
+
+        teacher.StudentsCountLimit = limit;
+
+        await _db.SaveChangesAsync();
+
+        return Ok();
+    }
+    
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> ChooseTeacher(long teacherId)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == Account.Id);
+        var teacher = await _db.Users.FirstOrDefaultAsync(t => t.Id == teacherId);
+        var studentCounts = _db.Users.Where(s => s.CuratorId == teacherId).Count();
+        if (teacher.StudentsCountLimit >= (studentCounts + 1))
+        {
+            user.CuratorId = teacherId;
+            await _db.SaveChangesAsync();
+            return Ok();
+        }
+        else
+        {
+            throw new AppException("Too many students for this teacher!");
+        }
+    }
+
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> ResetPassword(ResetPasswordRequest req)
@@ -124,6 +204,11 @@ public class UsersController : BaseController
 
         var result = _mapper.Map<UserRequest>(user);
         result.Token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+        if (user.Role == UserType.Student || user.Role == UserType.Teacher)
+        {
+            var deadline = await _db.Deadlines.OrderByDescending(d => d.Id).FirstOrDefaultAsync(d => d.DepartmentId == user.DepartmentId);
+            result.Deadline = deadline.EndDate;
+        }
         return Ok(result);
     }
 }

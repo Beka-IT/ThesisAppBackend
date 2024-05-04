@@ -15,5 +15,7 @@ public class User
     public string Password { get; set; }
     public string PhoneNumber { get; set; }
     public UserType Role { get; set; }
+    public long? CuratorId { get; set; }
+    public int StudentsCountLimit { get; set; }
 }
 

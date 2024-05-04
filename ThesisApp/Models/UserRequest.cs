@@ -15,4 +15,5 @@ public class UserRequest
     public string PhoneNumber { get; set; }
     public UserType Role { get; set; }
     public string Token { get; set; }
+    public DateTime? Deadline { get; set; }
 }
