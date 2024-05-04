@@ -11,6 +11,7 @@ namespace Municipality.Data
         public DbSet<Thesis> Theses { get; set; }
         public DbSet<ConfirmationCode> ConfirmationCodes { get; set; }
         public DbSet<Deadline> Deadlines { get; set; }
+        public DbSet<RequestToThesis> RequestToTheses { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
