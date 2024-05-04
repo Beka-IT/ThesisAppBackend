@@ -6,6 +6,7 @@ using Municipality.Data;
 using ThesisApp.Entities;
 using ThesisApp.Helpers;
 using ThesisApp.Models;
+using ThesisApp.Services;
 
 namespace ThesisApp.Controllers;
 
@@ -15,10 +16,12 @@ public class UsersController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly AppDbContext _db;
-    public UsersController(AppDbContext context, IMapper mapper)
+    private readonly UsersService _usersService;
+    public UsersController(AppDbContext context, IMapper mapper, UsersService usersService)
     {
         _db = context;
         _mapper = mapper;
+        _usersService = usersService;
     }
 
     [HttpPost]
@@ -27,12 +30,12 @@ public class UsersController : ControllerBase
     {
         if(request == null)
         {
-            return BadRequest("Баардык талааларды толтурунуз!");
+            return BadRequest();
         }
 
         if (_db.Users.Any(x => x.Email == request.Email))
         {
-            return BadRequest("Бул email бош эмес!");
+            return BadRequest("This email is busy!");
         }
 
         var user = _mapper.Map<User>(request);
@@ -52,6 +55,7 @@ public class UsersController : ControllerBase
         try
         {
             await _db.SaveChangesAsync();
+            await _usersService.GenerateAndSendConfirmCode(user);
         }
         catch (Exception ex)
         {

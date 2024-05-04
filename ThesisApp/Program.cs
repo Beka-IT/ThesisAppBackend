@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Municipality.Data;
 using ThesisApp.Helpers;
+using ThesisApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
 }));
+builder.Services.AddScoped<UsersService>();
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -111,4 +113,4 @@ app.UseSession();
 
 app.MapControllers();
 
-app.Run("https://0.0.0.0:7098");
+app.Run("http://0.0.0.0:5001");
