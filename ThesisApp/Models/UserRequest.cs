@@ -1,8 +1,8 @@
 using ThesisApp.Enums;
 
-namespace ThesisApp.Entities;
+namespace ThesisApp.Models;
 
-public class User
+public class UserRequest
 {
     public long Id { get; set; }
     public string Email { get; set; }
@@ -12,8 +12,7 @@ public class User
     public int FacultyId { get; set; }
     public int DepartmentId { get; set; }
     public bool IsVerified { get; set; } = false;
-    public string Password { get; set; }
     public string PhoneNumber { get; set; }
     public UserType Role { get; set; }
+    public string Token { get; set; }
 }
-

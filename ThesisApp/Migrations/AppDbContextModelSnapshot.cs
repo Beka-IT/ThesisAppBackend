@@ -118,6 +118,9 @@ namespace ThesisApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("TEXT");

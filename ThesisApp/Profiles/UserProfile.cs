@@ -9,6 +9,7 @@ namespace ThesisApp.Profiles
         public UserProfile()
         {
             CreateMap<SignUpRequest, User>();
+            CreateMap<User, UserRequest>();
         }
     }
 }
