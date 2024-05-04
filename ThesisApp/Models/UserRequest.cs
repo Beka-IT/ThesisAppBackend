@@ -16,4 +16,5 @@ public class UserRequest
     public UserType Role { get; set; }
     public string Token { get; set; }
     public DateTime? Deadline { get; set; }
+    public long? ChosenThesisId { get; set; }
 }

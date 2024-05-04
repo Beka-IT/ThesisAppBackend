@@ -96,7 +96,13 @@ namespace ThesisApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<long>("CuratorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("DescriptionKg")
@@ -107,12 +113,18 @@ namespace ThesisApp.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsChosen")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("TitleKg")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TitleTr")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -124,6 +136,9 @@ namespace ThesisApp.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long?>("ChosenThesisId")
                         .HasColumnType("INTEGER");
 
                     b.Property<long?>("CuratorId")

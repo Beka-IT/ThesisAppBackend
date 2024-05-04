@@ -17,5 +17,6 @@ public class User
     public UserType Role { get; set; }
     public long? CuratorId { get; set; }
     public int StudentsCountLimit { get; set; }
+    public long? ChosenThesisId { get; set; }
 }
 

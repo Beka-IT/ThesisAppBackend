@@ -11,6 +11,7 @@ namespace ThesisApp.Profiles
             CreateMap<SignUpRequest, User>();
             CreateMap<User, UserRequest>();
             CreateMap<CreateDeadlineRequest, Deadline>();
+            CreateMap<CreateThesisRequest, Thesis>();
         }
     }
 }
