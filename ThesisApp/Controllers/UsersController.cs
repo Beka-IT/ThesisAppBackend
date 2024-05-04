@@ -35,6 +35,51 @@ public class UsersController : BaseController
         _usersService = usersService;
     }
 
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetAllStudents()
+    {
+        var user = Account;
+
+        var students = await _db.Users
+            .Where(s => s.DepartmentId == user.DepartmentId && s.Role == UserType.Student)
+            .Select(s => new
+            {
+                s.Id,
+                s.Email,
+                s.Firstname,
+                s.Lastname,
+                s.Patronomyc,
+                s.CuratorId
+            })
+            .ToListAsync();
+
+        return Ok(students);
+    }
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetMyStudents()
+    {
+        var user = Account;
+        if (user.Role != UserType.Teacher)
+        {
+            throw new AppException("Permission denied!");
+        }
+        
+        var students = await _db.Users.Where(s => s.CuratorId == user.Id)
+            .Select(s => new
+            {
+                s.Id,
+                s.Email,
+                s.Firstname,
+                s.Lastname,
+                s.Patronomyc,
+                s.CuratorId
+            })
+            .ToListAsync();
+
+        return Ok(students);
+    }
     [HttpPost]
     public async Task<IActionResult> SignUp(SignUpRequest request)
     {
