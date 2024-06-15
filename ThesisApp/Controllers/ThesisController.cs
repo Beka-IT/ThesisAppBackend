@@ -205,4 +205,43 @@ public class ThesisController : BaseController
         
         return Ok(thesis);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetReport()
+    {
+        var account = Account;
+        var theses = await _db.Theses.Where(t => t.DepartmentId == account.DepartmentId).ToListAsync();
+        var reportItems = new List<ReportItem>();
+
+        foreach (var these in theses)
+        {
+            var curator = await _db.Users.FindAsync(these.CuratorId);
+            var students = await _db.Users.Where(s => s.ChosenThesisId == these.Id)
+                .Select(s => new ReportStudent
+                {
+                    StudentId = s.Id,
+                    StudentFirstname = s.Firstname,
+                    StudentLastname = s.Lastname,
+                }).ToListAsync();
+
+            var reportItem = new ReportItem
+            {
+                CuratorFirstname = curator.Firstname,
+                CuratorLastname = curator.Lastname,
+                CuratorId = curator.Id,
+                Students = students,
+                ThesisId = these.Id,
+                ThesisTitleKg = these.TitleKg,
+                ThesisTitleTr = these.TitleTr,
+            };
+            reportItems.Add(reportItem);
+        }
+
+        var res = new ReportResponse
+        {
+            ReportItems = reportItems
+        };
+
+        return Ok(res);
+    }
 }

@@ -113,4 +113,4 @@ app.UseSession();
 
 app.MapControllers();
 
-app.Run("http://0.0.0.0:5001");
+app.Run("https://0.0.0.0:5001");
